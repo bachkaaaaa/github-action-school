@@ -1,5 +1,31 @@
 name: work
-on: workflow_dispatch
-  job:
-     test and lint :
-     -
+on:
+    workflow_dispatch:
+jobs:
+     test-and-lint :
+         runs-on: ubuntu-lastest
+         steps: 
+             - name: checkout
+               uses: actions/checkout@v4
+             - name: setup nodejs
+               uses: actions/setup-node@v4
+             - name: installing dependencies
+               run: npm ci
+             - name: run lint
+               run: npm run lint
+             - name: run test
+               run: npm run test
+     build-deploy :
+          runs-on: ubuntu-lastest
+          steps: 
+              - name: checkout
+                uses: actions/checkout@v4
+              - name: Login to Dockerhub
+                run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p  ${{ secrets.DOCKER_PASSWORD }}
+              - name: Build docker image
+                run: docker build -t ${{ secrets.DOCKER_USERNAME }}/github-action-school 
+              - name: Push to Dockerhub
+                run: docker push ${{ secrets.DOCKER_USERNAME }}/github-action-school
+            
+             
+               
