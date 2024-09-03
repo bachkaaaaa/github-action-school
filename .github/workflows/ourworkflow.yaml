@@ -1,0 +1,5 @@
+name: work
+on: workflow_dispatch
+  job:
+     test and lint :
+     -
